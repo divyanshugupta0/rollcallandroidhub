@@ -1984,6 +1984,27 @@
         </main>
       </section>
 
+      <section class="screen hidden flex flex-col h-full overflow-hidden" data-screen="offline" aria-hidden="true">
+        <main class="flex-1 overflow-y-auto px-6 pt-10 pb-24">
+          <div class="min-h-[70vh] flex flex-col items-center justify-center text-center">
+            <div class="h-16 w-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-[32px]">cloud_off</span>
+            </div>
+            <h2 class="mt-5 text-xl font-bold text-slate-900 dark:text-white">You're offline</h2>
+            <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-xs">
+              Check your internet connection and tap refresh to try again.
+            </p>
+            <button id="offline-retry-btn" type="button"
+              class="mt-6 w-full max-w-xs rounded-xl bg-primary text-white py-3 text-sm font-bold shadow-lg shadow-primary/30 transition-transform active:scale-[0.98]">
+              Refresh
+            </button>
+            <p class="mt-4 text-xs text-slate-400 dark:text-slate-500">
+              We will reconnect automatically once you're back online.
+            </p>
+          </div>
+        </main>
+      </section>
+
       <section class="screen hidden flex flex-col h-full overflow-hidden" data-screen="profile" aria-hidden="true">
         <header
           class="flex flex-col items-center justify-center pt-10 pb-8 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 relative shrink-0 sticky top-0 z-20">
@@ -2244,9 +2265,12 @@
         const screens = Array.from(document.querySelectorAll("[data-screen]"));
         const navItems = Array.from(document.querySelectorAll("[data-nav]"));
         const navTargets = Array.from(document.querySelectorAll("[data-nav-target]"));
+        const bottomNav = document.querySelector("nav");
+        const offlineRetryBtn = document.getElementById("offline-retry-btn");
 
         const isValidScreen = (name) => screens.some((screen) => screen.dataset.screen === name);
         let activeScreen = null;
+        let lastOnlineScreen = null;
 
         const cleanupTransientScreens = (from) => {
           if (!from) return;
@@ -2266,6 +2290,9 @@
 
         const setActiveScreen = (name) => {
           if (!isValidScreen(name)) return;
+          if (name !== "offline") {
+            lastOnlineScreen = name;
+          }
           if (activeScreen && activeScreen !== name) {
             cleanupTransientScreens(activeScreen);
           }
@@ -2316,6 +2343,9 @@
               window.refreshCheckinMap();
             }, 0);
           }
+          if (bottomNav) {
+            bottomNav.classList.toggle("hidden", name === "offline");
+          }
           activeScreen = name;
         };
 
@@ -2338,12 +2368,43 @@
         const initial = isValidScreen(location.hash.slice(1)) ? location.hash.slice(1) : "home";
         setActiveScreen(initial);
 
+        if (!navigator.onLine && isValidScreen("offline")) {
+          setActiveScreen("offline");
+        }
+
         window.addEventListener("hashchange", () => {
           const next = location.hash.slice(1);
           if (isValidScreen(next)) {
             setActiveScreen(next);
           }
         });
+
+        window.addEventListener("offline", () => {
+          if (isValidScreen("offline")) {
+            setActiveScreen("offline");
+          }
+        });
+
+        window.addEventListener("online", () => {
+          const target = lastOnlineScreen || "home";
+          if (isValidScreen(target)) {
+            setActiveScreen(target);
+          }
+        });
+
+        if (offlineRetryBtn) {
+          offlineRetryBtn.addEventListener("click", () => {
+            if (navigator.onLine) {
+              window.location.reload();
+              return;
+            }
+            const original = offlineRetryBtn.textContent;
+            offlineRetryBtn.textContent = "Still offline";
+            window.setTimeout(() => {
+              offlineRetryBtn.textContent = original || "Refresh";
+            }, 1200);
+          });
+        }
       })();
     </script>
   </div>
