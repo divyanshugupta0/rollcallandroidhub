@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RollCall - QR and OCR Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom styles for the camera overlay simulation */
+        .camera-overlay {
+            background: radial-gradient(circle, transparent 35%, rgba(0,0,0,0.6) 36%);
+        }
+        
+        /* Simulating the scanning line animation */
+        @keyframes scan {
+            0% { top: 10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
+        .scan-line {
+            position: absolute;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: #135bec;
+            box-shadow: 0 0 4px #135bec;
+            animation: scan 2.5s infinite linear;
+            border-radius: 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-screen w-full flex flex-col relative">
+<!-- Live Camera Feed Simulation -->
+<!-- Ideally this is a video element, here we use a background image to simulate -->
+<div class="absolute inset-0 w-full h-full z-0 bg-cover bg-center" data-alt="Blurred classroom environment background simulating camera feed" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBuTr_KVSiucfkeC0O-nCkbKu_KshYTDzgoYgpAoH9ZGnb-kJI2Rtm20BVzFiTpt-ZGWtO2ztXwEXagx-qCNYWKhFY1GI96Gi-zAXVlV54cJB1iSCoMpjPX6f2ANs6lThiazQhl2wsq_5ydsqv2Sy9nQgCLa4ZykAHvxBEB0GWlvP1MCXpSV-pWnjOtdYgqramb7smBaaMgJK7II3Y9Mg8z5jXIMkISYKzaAqAtOJ77TamlWOIsvXpSyV9oCbSw81MG50_YtZc4L9Ak');">
+</div>
+<!-- Dark Overlay with Cutout -->
+<!-- Using a simplified overlay approach for HTML/CSS -->
+<div class="absolute inset-0 w-full h-full z-10 bg-black/40 backdrop-blur-[2px]"></div>
+<!-- Main UI Container -->
+<div class="relative z-20 flex flex-col h-full justify-between">
+<!-- Top Bar -->
+<div class="flex items-center justify-between p-4 pt-12 bg-gradient-to-b from-black/60 to-transparent">
+<button class="flex items-center justify-center size-10 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+<h1 class="text-white text-lg font-semibold tracking-wide drop-shadow-md">Scan for Attendance</h1>
+<button class="flex items-center justify-center size-10 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-2xl">flash_on</span>
+</button>
+</div>
+<!-- Scanner Viewfinder Area -->
+<div class="flex-1 flex flex-col items-center justify-center relative w-full px-8">
+<!-- Contextual Instructions Top -->
+<div class="mb-8 text-center animate-pulse">
+<p class="text-white font-medium text-lg drop-shadow-md bg-black/20 px-4 py-1 rounded-full backdrop-blur-sm inline-block">
+                    Align QR code within frame
+                </p>
+</div>
+<!-- The Scanner Box -->
+<div class="relative w-full aspect-square max-w-[320px] rounded-3xl border-2 border-white/30 shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] overflow-hidden">
+<!-- Corner Indicators -->
+<div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-primary rounded-tl-xl"></div>
+<div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-primary rounded-tr-xl"></div>
+<div class="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-primary rounded-bl-xl"></div>
+<div class="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-primary rounded-br-xl"></div>
+<!-- Scanning Animation Line -->
+<div class="scan-line"></div>
+<!-- Center Crosshair (Subtle) -->
+<div class="absolute inset-0 flex items-center justify-center opacity-30">
+<span class="material-symbols-outlined text-white text-4xl">add</span>
+</div>
+</div>
+<!-- Helper Text Bottom -->
+<div class="mt-8 text-center px-6">
+<p class="text-white/80 text-sm font-light leading-relaxed drop-shadow-sm">
+                    Point camera at the screen or poster.<br/>Ensure good lighting for best results.
+                </p>
+</div>
+</div>
+<!-- Bottom Controls Area -->
+<div class="bg-gradient-to-t from-black/80 via-black/50 to-transparent pb-8 pt-4 px-4 flex flex-col items-center gap-6">
+<!-- GPS Status Pill -->
+<div class="flex items-center gap-2 bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full px-4 py-2 shadow-lg">
+<div class="flex items-center justify-center size-5 bg-primary rounded-full animate-pulse">
+<span class="material-symbols-outlined text-[14px] text-white">check</span>
+</div>
+<span class="text-white text-xs font-medium tracking-wide">GPS Verified: Science Building A</span>
+</div>
+<!-- Mode Switcher -->
+<div class="bg-black/40 backdrop-blur-xl p-1.5 rounded-xl flex w-full max-w-[320px] shadow-inner border border-white/5">
+<button class="flex-1 py-2.5 px-4 rounded-lg bg-white shadow-sm text-slate-900 text-sm font-bold flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">qr_code_scanner</span>
+                    Scan QR
+                </button>
+<button class="flex-1 py-2.5 px-4 rounded-lg text-white/70 hover:text-white text-sm font-medium flex items-center justify-center gap-2 transition-all hover:bg-white/5">
+<span class="material-symbols-outlined text-lg">badge</span>
+                    Scan ID
+                </button>
+</div>
+<!-- Action Buttons Row -->
+<div class="flex items-center justify-between w-full max-w-[320px] px-2 pt-2">
+<!-- Gallery/History Button -->
+<button class="flex flex-col items-center gap-1 group">
+<div class="size-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-white text-xl">photo_library</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium">Gallery</span>
+</button>
+<!-- Shutter Button (Visual Anchor) -->
+<button class="size-20 rounded-full border-4 border-white flex items-center justify-center bg-transparent relative group transform active:scale-95 transition-transform">
+<div class="size-16 bg-white rounded-full group-hover:scale-90 transition-all duration-300"></div>
+</button>
+<!-- Manual Code Entry -->
+<button class="flex flex-col items-center gap-1 group">
+<div class="size-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-white text-xl">keyboard</span>
+</div>
+<span class="text-[10px] text-white/60 font-medium">Enter Code</span>
+</button>
+</div>
+<!-- Safe Area Spacer for iOS -->
+<div class="h-4"></div>
+</div>
+</div>
+<!-- Permission Request Overlay (Hidden by default, shown here as example of state handling if needed) -->
+<!-- 
+    <div class="hidden absolute inset-0 z-50 bg-background-light dark:bg-background-dark flex flex-col items-center justify-center p-6 text-center">
+        <div class="size-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-400">
+            <span class="material-symbols-outlined text-3xl">videocam_off</span>
+        </div>
+        <h2 class="text-xl font-bold mb-2">Camera Access Required</h2>
+        <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-xs">We need access to your camera to scan QR codes for attendance.</p>
+        <button class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg w-full max-w-xs transition-colors">
+            Open Settings
+        </button>
+    </div> 
+    -->
+</body></html>

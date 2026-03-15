@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-xl overflow-hidden">
+<header class="flex items-center justify-between px-6 pt-12 pb-4 bg-white dark:bg-slate-900 sticky top-0 z-10 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">Notifications</h1>
+</div>
+<button class="text-sm font-medium text-primary hover:text-blue-700">
+            Mark all read
+        </button>
+</header>
+<main class="flex-1 overflow-y-auto pb-24 px-4 pt-4 space-y-6">
+<div>
+<h3 class="px-2 mb-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Today</h3>
+<div class="flex flex-col gap-3">
+<div class="relative group bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="absolute top-4 right-4 h-2 w-2 rounded-full bg-primary"></div>
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Attendance Verified Successfully</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Your face verification for <span class="font-semibold text-slate-700 dark:text-slate-300">Advanced Network Security</span> was confirmed.</p>
+<span class="text-[10px] font-medium text-slate-400 mt-2 block">2 mins ago</span>
+</div>
+</div>
+</div>
+<div class="relative group bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+<div class="absolute top-4 right-4 h-2 w-2 rounded-full bg-primary"></div>
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px] animate-pulse">sensors</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">New Attendance Session Started</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Prof. Jenkins started a session for <span class="font-semibold text-slate-700 dark:text-slate-300">CS-402</span>. Please verify your location.</p>
+<span class="text-[10px] font-medium text-slate-400 mt-2 block">10 mins ago</span>
+</div>
+</div>
+</div>
+<div class="group bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 opacity-90">
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="h-10 w-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Reminder: Class in 15 mins</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed"><span class="font-semibold text-slate-700 dark:text-slate-300">Web Development</span> starts soon. Prepare for online check-in.</p>
+<span class="text-[10px] font-medium text-slate-400 mt-2 block">1 hour ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="px-2 mb-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Yesterday</h3>
+<div class="flex flex-col gap-3">
+<div class="group bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 opacity-60">
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">grade</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Attendance Report Available</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Your weekly attendance summary for <span class="font-semibold text-slate-700 dark:text-slate-300">Data Structures</span> is ready to view.</p>
+<span class="text-[10px] font-medium text-slate-400 mt-2 block">Yesterday, 4:00 PM</span>
+</div>
+</div>
+</div>
+<div class="group bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 opacity-60">
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">settings_alert</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-0.5">App Update Required</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">A new version of RollCall is available with improved face recognition.</p>
+<span class="text-[10px] font-medium text-slate-400 mt-2 block">Yesterday, 9:30 AM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="absolute bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 pb-6 pt-2 z-20">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">calendar_month</span>
+<span class="text-[10px] font-medium">Schedule</span>
+</a>
+<div class="relative -top-6">
+<button class="h-14 w-14 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg shadow-slate-900/20 flex items-center justify-center transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[28px]">qr_code_2</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[26px] fill-current">notifications</span>
+<span class="text-[10px] font-medium">Alerts</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+
+</body></html>

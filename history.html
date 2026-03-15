@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attendance History Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-xl overflow-hidden">
+<header class="flex items-center justify-between px-6 pt-12 pb-4 bg-white dark:bg-slate-900 sticky top-0 z-10 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="h-10 w-10 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="Portrait of a male student smiling" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC2hz_Fa0RtuYB_MQvsQbyzz29YdCnO0o-1GPOxsrb_Jeyp-58JjUfFX2j_Z5G31IyCGQvT4E2dl4D6OOhJ1aIUrz5eLi2F6Q0YAmkXFqz3SvZeOs5WgE9qBMXwYapMOgSvjFLectFeFslVNW_Accx84XVQcQFTgYdQWRk4k0SY7dRy6xQaoX1c015-Iky3nkb_esEGwA3cJDzY0-oL3GHBz9mdspDTAqHvkQ71w-cUc7T5Sp6ZeMeYuTMVjg8OHqh7ayGi0XYT4JD0')"></div>
+<span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white dark:ring-slate-900"></span>
+</div>
+<div>
+<h1 class="text-sm font-normal text-slate-500 dark:text-slate-400">Attendance</h1>
+<h2 class="text-lg font-bold text-slate-900 dark:text-white leading-tight">History</h2>
+</div>
+</div>
+<button class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+<span class="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto pb-24 px-4 pt-6 space-y-6">
+<div class="px-2">
+<div class="relative overflow-hidden rounded-2xl bg-primary shadow-lg shadow-blue-500/30 p-5 text-white">
+<div class="absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
+<div class="absolute bottom-0 left-0 -mb-4 -ml-4 h-24 w-24 rounded-full bg-black/10 blur-xl"></div>
+<div class="relative flex items-center justify-between">
+<div>
+<p class="text-blue-100 text-sm font-medium mb-1">Overall Attendance</p>
+<h3 class="text-3xl font-bold">92%</h3>
+<p class="text-xs text-blue-100 mt-1">Excellent standing</p>
+</div>
+<div class="h-16 w-16 rounded-full border-4 border-white/20 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-3xl">verified</span>
+<svg class="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 36 36">
+<path class="text-white/10" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-white drop-shadow-md" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="92, 100" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-3 px-2">
+<div class="relative flex-1">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full rounded-xl border-none bg-white dark:bg-slate-800 py-3 pl-10 pr-4 text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary" placeholder="Search class or subject..." type="text"/>
+</div>
+<button class="flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 px-3.5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">filter_list</span>
+</button>
+</div>
+<div class="space-y-6 px-2">
+<div>
+<h4 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 pl-1">October 2023</h4>
+<div class="flex flex-col gap-3">
+<div class="relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-slate-700 text-primary">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 dark:text-white">Adv. Network Security</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Oct 24 • 10:02 AM</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/20 dark:text-green-400">Present</span>
+</div>
+<div class="flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 pt-3">
+<span class="text-[10px] font-semibold uppercase text-slate-400">Verified via:</span>
+<div class="flex gap-1.5">
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="GPS Location">
+<span class="material-symbols-outlined text-[12px]">near_me</span> GPS
+                                    </span>
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="QR Code">
+<span class="material-symbols-outlined text-[12px]">qr_code</span> QR
+                                    </span>
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="Face ID">
+<span class="material-symbols-outlined text-[12px]">face</span> Face
+                                    </span>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-50 dark:bg-slate-700 text-orange-600">
+<span class="material-symbols-outlined text-[20px]">code</span>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 dark:text-white">Web Development</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Oct 22 • 01:35 PM</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/20 dark:text-green-400">Present</span>
+</div>
+<div class="flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 pt-3">
+<span class="text-[10px] font-semibold uppercase text-slate-400">Verified via:</span>
+<div class="flex gap-1.5">
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="GPS Location">
+<span class="material-symbols-outlined text-[12px]">near_me</span> GPS
+                                    </span>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700/50 opacity-90">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-50 dark:bg-slate-700 text-purple-600">
+<span class="material-symbols-outlined text-[20px]">dataset</span>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 dark:text-white">Data Structures</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Oct 20 • --:--</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-900/20 dark:text-red-400">Absent</span>
+</div>
+<div class="flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 pt-3">
+<span class="text-[10px] font-semibold uppercase text-slate-400">Reason:</span>
+<span class="text-[10px] text-slate-500 dark:text-slate-400 italic">No verification submitted</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h4 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 pl-1">September 2023</h4>
+<div class="flex flex-col gap-3">
+<div class="relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-slate-700 text-primary">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 dark:text-white">Adv. Network Security</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Sep 28 • 10:05 AM</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/20 dark:text-green-400">Present</span>
+</div>
+<div class="flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 pt-3">
+<span class="text-[10px] font-semibold uppercase text-slate-400">Verified via:</span>
+<div class="flex gap-1.5">
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="GPS Location">
+<span class="material-symbols-outlined text-[12px]">near_me</span> GPS
+                                    </span>
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="OCR Document">
+<span class="material-symbols-outlined text-[12px]">description</span> OCR
+                                    </span>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-50 dark:bg-slate-700 text-purple-600">
+<span class="material-symbols-outlined text-[20px]">dataset</span>
+</div>
+<div>
+<h5 class="font-bold text-slate-900 dark:text-white">Data Structures</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Sep 25 • 01:45 PM</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20 dark:bg-yellow-900/20 dark:text-yellow-400">Late</span>
+</div>
+<div class="flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 pt-3">
+<span class="text-[10px] font-semibold uppercase text-slate-400">Verified via:</span>
+<div class="flex gap-1.5">
+<span class="flex items-center gap-1 rounded-md bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300" title="QR Code">
+<span class="material-symbols-outlined text-[12px]">qr_code</span> QR
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="absolute bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-6 pb-6 pt-2 z-20">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">calendar_month</span>
+<span class="text-[10px] font-medium">Schedule</span>
+</a>
+<div class="relative -top-6">
+<button class="h-14 w-14 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg shadow-slate-900/20 flex items-center justify-center transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[28px]">qr_code_2</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[26px]">history</span>
+<span class="text-[10px] font-medium">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[26px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+
+</body></html>
