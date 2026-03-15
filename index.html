@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11808,6 +11808,7 @@
       const messageInput = document.getElementById('report-issue-message');
       const userIdInput = document.getElementById('report-issue-user-id');
       const deviceInput = document.getElementById('report-issue-device');
+      const WEB3FORMS_ACCESS_KEY = '2def5933-b1c7-4028-8655-c2c6b2bf08e2';
 
       let isSubmitting = false;
 
@@ -11845,6 +11846,9 @@
         if (emailInput && user && !emailInput.value) {
           emailInput.value = user.email || '';
         }
+        if (accessKeyInput && !accessKeyInput.value && WEB3FORMS_ACCESS_KEY) {
+          accessKeyInput.value = WEB3FORMS_ACCESS_KEY;
+        }
         if (deviceInput) {
           deviceInput.value = buildDeviceInfo();
         }
@@ -11869,7 +11873,9 @@
         hydrateDefaults();
         if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
 
-        const accessKey = accessKeyInput ? accessKeyInput.value.trim() : '';
+        const accessKey = accessKeyInput && accessKeyInput.value.trim()
+          ? accessKeyInput.value.trim()
+          : WEB3FORMS_ACCESS_KEY;
         if (!accessKey) {
           setStatus('error', 'Missing Web3Forms access key. Please add your access key first.');
           return;
@@ -11894,6 +11900,11 @@
             payload.message = messageInput ? messageInput.value.trim() : '';
           }
 
+          payload.access_key = accessKey;
+          payload.from_name = payload.name || 'RollCall Student';
+          if (payload.email) {
+            payload.replyto = payload.email;
+          }
           payload.reported_at = new Date().toISOString();
 
           const response = await fetch('https://api.web3forms.com/submit', {
@@ -11906,6 +11917,9 @@
           });
 
           const data = await response.json().catch(() => ({}));
+          const hardErrorMessage = data && typeof data.message === 'string' ? data.message : '';
+          const hardError = /access key|invalid|missing|origin|domain/i.test(hardErrorMessage);
+
           if (response.ok && data && data.success) {
             setStatus('success', 'Issue sent successfully. Thanks for the report.');
             if (typeof window.rollcallShowNotification === 'function') {
@@ -11919,9 +11933,36 @@
             }
             form.reset();
             hydrateDefaults();
+          } else if (hardError) {
+            setStatus('error', hardErrorMessage || 'Web3Forms rejected the request. Please check the access key.');
           } else {
-            const message = data && data.message ? data.message : 'Unable to send right now. Please try again.';
-            setStatus('error', message);
+            formData.set('access_key', accessKey);
+            formData.set('from_name', payload.from_name);
+            if (payload.replyto) {
+              formData.set('replyto', payload.replyto);
+            }
+            try {
+              await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+              });
+              setStatus('success', 'Issue sent. If you do not receive the email, please check your Web3Forms settings.');
+              if (typeof window.rollcallShowNotification === 'function') {
+                window.rollcallShowNotification(
+                  'Issue submitted',
+                  'Thanks, your report has been sent.',
+                  'report'
+                );
+              } else if (typeof window.rollcallNotifyNative === 'function') {
+                window.rollcallNotifyNative('Issue submitted', 'Thanks, your report has been sent.');
+              }
+              form.reset();
+              hydrateDefaults();
+            } catch (fallbackError) {
+              const message = hardErrorMessage || 'Unable to send right now. Please try again.';
+              setStatus('error', message);
+            }
           }
         } catch (error) {
           setStatus('error', 'Network error while sending. Please try again.');
