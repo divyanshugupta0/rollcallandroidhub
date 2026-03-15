@@ -3875,6 +3875,40 @@
     console.log('Device ID initialized:', deviceId);
 
     // Login functionality
+    function sanitizeUiErrorDetails(message) {
+      if (!message) return '';
+      let cleaned = String(message);
+      // Strip URLs and project/database identifiers from user-facing errors.
+      cleaned = cleaned.replace(/https?:\/\/\S+/gi, '');
+      cleaned = cleaned.replace(/firefly-64eef/gi, '');
+      cleaned = cleaned.replace(/firebaseapp\.com|firebasedatabase\.app|firebasestorage\.app/gi, '');
+      cleaned = cleaned.replace(/\s+/g, ' ').trim();
+      return cleaned;
+    }
+
+    function getLoginFailureMessage(error) {
+      const code = error && error.code ? String(error.code) : '';
+      switch (code) {
+        case 'auth/invalid-credential':
+        case 'auth/invalid-login-credentials':
+        case 'auth/wrong-password':
+        case 'auth/user-not-found':
+          return 'Incorrect email or password.';
+        case 'auth/invalid-email':
+          return 'Please enter a valid email address.';
+        case 'auth/missing-password':
+          return 'Please enter your password.';
+        case 'auth/user-disabled':
+          return 'This account has been disabled. Contact your teacher.';
+        case 'auth/too-many-requests':
+          return 'Too many attempts. Please try again later.';
+        case 'auth/network-request-failed':
+          return 'Network error. Please check your connection and try again.';
+        default:
+          return 'Login failed. Please try again.';
+      }
+    }
+
     loginBtn.addEventListener('click', async () => {
       try {
         const email = emailInput.value;
@@ -3912,8 +3946,7 @@
         // Check if this user is already logged in on another device
         checkDeviceLogin(userCredential.user);
       } catch (error) {
-        const message = error && error.message ? error.message : 'Unknown sign-in error.';
-        showLoginStatus(`Login failed: ${message}`, 'error');
+        showLoginStatus(getLoginFailureMessage(error), 'error');
         loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
         loginBtn.disabled = false;
       }
@@ -4493,7 +4526,11 @@
         })
         .catch((error) => {
           console.error('Lock check error:', error);
-          showLoginStatus(`Login check failed: ${error.message}`, 'error');
+          const safeDetails = sanitizeUiErrorDetails(error && error.message);
+          showLoginStatus(
+            safeDetails ? `Login check failed: ${safeDetails}` : 'Login check failed. Please try again.',
+            'error'
+          );
           // Reset login button
           loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
           loginBtn.disabled = false;
@@ -4716,7 +4753,11 @@
               })
               .catch((error) => {
                 console.error("Error creating basic profile:", error);
-                showLoginStatus(`User profile creation failed: ${error.message}`, 'error');
+                const safeDetails = sanitizeUiErrorDetails(error && error.message);
+                showLoginStatus(
+                  safeDetails ? `User profile creation failed: ${safeDetails}` : 'User profile creation failed.',
+                  'error'
+                );
                 loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
                 loginBtn.disabled = false;
               });
@@ -4724,7 +4765,11 @@
         })
         .catch((error) => {
           console.error("Error retrieving user data:", error);
-          showLoginStatus(`User data retrieval failed: ${error.message}`, 'error');
+          const safeDetails = sanitizeUiErrorDetails(error && error.message);
+          showLoginStatus(
+            safeDetails ? `User data retrieval failed: ${safeDetails}` : 'User data retrieval failed.',
+            'error'
+          );
           loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
           loginBtn.disabled = false;
         });
@@ -12757,8 +12802,14 @@
   <script>
     window.addEventListener('error', function (event) {
       const status = document.getElementById('login-status');
-      if (!status || !event || !event.message) return;
-      status.textContent = 'Script error: ' + event.message;
+      const message = event && event.message ? event.message : '';
+      if (!status || !message) return;
+      // "Script error." is a generic cross-origin/blocked detail; avoid showing it to users.
+      if (message === 'Script error.' || message === 'Script error') {
+        console.error('Window error:', event);
+        return;
+      }
+      status.textContent = 'App error: ' + message;
       status.className = 'status-indicator error';
       status.classList.remove('hidden');
     });
